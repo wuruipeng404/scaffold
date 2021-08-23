@@ -27,6 +27,10 @@ type ApiResponse struct {
 
 type BeautyController struct{}
 
+func NewBeautyControl() *BeautyController {
+	return new(BeautyController)
+}
+
 func (*BeautyController) OK(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, ApiResponse{Code: _Success, Msg: _SuccessMsg, Data: data})
 }

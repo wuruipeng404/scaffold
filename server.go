@@ -16,6 +16,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/wuruipeng404/scaffold/logger"
+	"github.com/wuruipeng404/scaffold/util"
 	"go.uber.org/zap"
 )
 
@@ -33,7 +34,7 @@ type GraceServer struct {
 func NewGraceServer(listen string, engine *gin.Engine, log *zap.SugaredLogger) *GraceServer {
 
 	if log == nil {
-		log = logger.DefaultLogger()
+		log = logger.DefaultLogger(util.DefaultLogPath)
 	}
 
 	return &GraceServer{

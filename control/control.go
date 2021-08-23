@@ -40,10 +40,10 @@ func (*BeautyController) PureOK(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func (*BeautyController) Error(c *gin.Context, err string) {
-	c.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err})
+func (*BeautyController) Error(c *gin.Context, err error) {
+	c.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err.Error()})
 }
 
-func (*BeautyController) ErrorWithCode(c *gin.Context, code int, err string) {
-	c.JSON(http.StatusOK, ApiResponse{Code: code, Msg: err})
+func (*BeautyController) ErrorWithCode(c *gin.Context, code int, err error) {
+	c.JSON(http.StatusOK, ApiResponse{Code: code, Msg: err.Error()})
 }

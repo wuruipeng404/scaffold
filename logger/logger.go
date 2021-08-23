@@ -9,7 +9,6 @@ package logger
 import (
 	"io"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/lestrrat-go/file-rotatelogs"
@@ -23,7 +22,6 @@ func timeFormat(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 }
 
 func NewSugarLogger(path string) *zap.SugaredLogger {
-	path = strings.TrimSuffix(path, ".log")
 
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "time",
@@ -64,7 +62,7 @@ func NewSugarLogger(path string) *zap.SugaredLogger {
 // 根据日期分割日志
 func logWriter(filename string) io.Writer {
 	hook, err := rotatelogs.New(
-		filename+".%Y-%m-%d.log",
+		filename+".%Y-%m-%d",
 		rotatelogs.WithLinkName(filename),
 		rotatelogs.WithMaxAge(time.Hour*24*7),
 		rotatelogs.WithRotationTime(time.Hour),

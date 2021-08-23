@@ -1,6 +1,6 @@
 /*
 * @Author: Rumple
-* @Email: ruipeng.wu@cyclone-robotics.com
+* @Email: wrp357711589@gmail.com
 * @DateTime: 2021/8/20 17:06
  */
 
@@ -12,12 +12,12 @@ import (
 	"io"
 	"math/rand"
 	"mime/multipart"
+	"strconv"
 	"time"
 )
 
-var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-
-func InArrayStr(value string, values []string) bool {
+// InArray todo: Generic
+func InArray(value string, values []string) bool {
 	for _, v := range values {
 		if v == value {
 			return true
@@ -56,4 +56,24 @@ func RandomStr(n int) string {
 // UTCNow for database time field
 func UTCNow() time.Time {
 	return time.Now().UTC().Truncate(time.Millisecond)
+}
+
+func IF(env, defaultValue string) string {
+	if env == "" {
+		return defaultValue
+	}
+	return env
+}
+
+// IFNum from env get int value // todo: Generic
+func IFNum(env string, defaultValue int) int {
+	if env == "" {
+		return defaultValue
+	}
+
+	if value, err := strconv.Atoi(env); err != nil {
+		return defaultValue
+	} else {
+		return value
+	}
 }

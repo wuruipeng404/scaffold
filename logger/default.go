@@ -1,12 +1,15 @@
 /*
 * @Author: Rumple
-* @Email: ruipeng.wu@cyclone-robotics.com
+* @Email: wrp357711589@gmail.com
 * @DateTime: 2021/8/23 10:23
  */
 
 package logger
 
 import (
+	"os"
+
+	"github.com/wuruipeng404/scaffold/util"
 	"go.uber.org/zap"
 )
 
@@ -14,7 +17,7 @@ var _log *zap.SugaredLogger
 
 // 默认生成一个日志对象
 func init() {
-	_log = NewSugarLogger("log/default.log")
+	_log = NewSugarLogger(util.IF(os.Getenv("SCAFFOLD_LOG_PATH"), "log/default.log"))
 }
 
 func DefaultLogger() *zap.SugaredLogger {

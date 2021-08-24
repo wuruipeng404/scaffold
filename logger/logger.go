@@ -21,7 +21,7 @@ func timeFormat(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format(util.TimeFormatString))
 }
 
-func NewSugarLogger(path string) *zap.SugaredLogger {
+func newSugarLogger(path string) *zap.SugaredLogger {
 
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "time",

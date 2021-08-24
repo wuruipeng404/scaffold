@@ -10,73 +10,63 @@ import (
 	"go.uber.org/zap"
 )
 
-// var _log *zap.SugaredLogger
-
-// func _log *zap.SugaredLogger {
-// 	if _log == nil {
-// 		_log = NewSugarLogger(util.IF(os.Getenv("SCAFFOLD_LOG_PATH"), util.DefaultLogPath))
-// 	}
-// 	return _log
-// }
-
-// func SetDefaultLogger(log *zap.SugaredLogger) {
-// 	_log = log
-// }
+var _log *zap.SugaredLogger
 
 // NewLogger InitDefaultLogger default logger with name, should be init call it
 func NewLogger(path string) *zap.SugaredLogger {
-	return NewSugarLogger(path)
+	_log = newSugarLogger(path)
+	return _log
 }
 
-//
-// func Debug(args ...interface{}) {
-// 	_log.Debug(args...)
-// }
-//
-// func Debugf(template string, args ...interface{}) {
-// 	_log.Debugf(template, args...)
-// }
-//
-// func Info(args ...interface{}) {
-// 	_log.Info(args...)
-// }
-//
-// func Infof(template string, args ...interface{}) {
-// 	_log.Infof(template, args...)
-// }
-//
-// func Error(args ...interface{}) {
-// 	_log.Error(args...)
-// }
-//
-// func Errorf(template string, args ...interface{}) {
-// 	_log.Errorf(template, args...)
-// }
-//
-// func Warn(args ...interface{}) {
-// 	_log.Warn(args...)
-// }
-//
-// func Warnf(template string, args ...interface{}) {
-// 	_log.Warnf(template, args...)
-// }
-//
-// func Panic(args ...interface{}) {
-// 	_log.Panic(args...)
-// }
-//
-// func Panicf(template string, args ...interface{}) {
-// 	_log.Panicf(template, args...)
-// }
-//
-// func Fatal(args ...interface{}) {
-// 	_log.Fatal(args...)
-// }
-//
-// func Fatalf(template string, args ...interface{}) {
-// 	_log.Fatalf(template, args...)
-// }
-//
-// func Sync() {
-// 	_ = _log.Sync()
-// }
+// todo: 默认的logger 此logger无法打印具体的行号与文件名
+func Debug(args ...interface{}) {
+	_log.Debug(args...)
+}
+
+func Debugf(template string, args ...interface{}) {
+	_log.Debugf(template, args...)
+}
+
+func Info(args ...interface{}) {
+	_log.Info(args...)
+}
+
+func Infof(template string, args ...interface{}) {
+	_log.Infof(template, args...)
+}
+
+func Error(args ...interface{}) {
+	_log.Error(args...)
+}
+
+func Errorf(template string, args ...interface{}) {
+	_log.Errorf(template, args...)
+}
+
+func Warn(args ...interface{}) {
+	_log.Warn(args...)
+}
+
+func Warnf(template string, args ...interface{}) {
+	_log.Warnf(template, args...)
+}
+
+func Panic(args ...interface{}) {
+	_log.Panic(args...)
+}
+
+func Panicf(template string, args ...interface{}) {
+	_log.Panicf(template, args...)
+}
+
+func Fatal(args ...interface{}) {
+	_log.Fatal(args...)
+}
+
+func Fatalf(template string, args ...interface{}) {
+	_log.Fatalf(template, args...)
+}
+
+func Sync() {
+	_ = _log.Sync()
+}

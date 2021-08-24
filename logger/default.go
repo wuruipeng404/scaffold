@@ -12,6 +12,10 @@ import (
 
 var _log *zap.SugaredLogger
 
+func DefaultLogger() *zap.SugaredLogger {
+	return _log
+}
+
 // NewLogger InitDefaultLogger default logger with name, should be init call it
 func NewLogger(path string) *zap.SugaredLogger {
 	_log = newSugarLogger(path)

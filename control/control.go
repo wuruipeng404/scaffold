@@ -10,6 +10,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/wuruipeng404/scaffold/logger"
 	"go.uber.org/zap"
 )
 
@@ -35,6 +36,7 @@ func NewBeautyControl(log *zap.SugaredLogger) *BeautyController {
 }
 
 func (c *BeautyController) OK(ctx *gin.Context, data interface{}) {
+	logger.Info(data)
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Success, Msg: _SuccessMsg, Data: data})
 }
 
@@ -49,10 +51,12 @@ func (c *BeautyController) PureOK(ctx *gin.Context) {
 
 func (c *BeautyController) Failed(ctx *gin.Context, err error) {
 	c.Errorf("Request [ Failed ] >> %s", err)
+	logger.Error(err)
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err.Error()})
 }
 
 func (c *BeautyController) FailedWithCode(ctx *gin.Context, code int, err error) {
+	logger.Debug(err)
 	c.Errorf("Request [ FailedWithCode ] >> %d : %s", code, err)
 	ctx.JSON(http.StatusOK, ApiResponse{Code: code, Msg: err.Error()})
 }

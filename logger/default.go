@@ -18,7 +18,6 @@ func NewLogger(path string) *zap.SugaredLogger {
 	return _log
 }
 
-// todo: 默认的logger 此logger无法打印具体的行号与文件名
 func Debug(args ...interface{}) {
 	_log.Debug(args...)
 }

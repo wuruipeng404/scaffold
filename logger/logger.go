@@ -54,9 +54,9 @@ func newSugarLogger(path string) *zap.SugaredLogger {
 	caller := zap.AddCaller()
 	// 开启文件及行号
 	development := zap.Development()
+	skip := zap.AddCallerSkip(1)
 
-	// sugar log 性能稍微差一些,但更符合使用习惯
-	return zap.New(core, development, caller).Sugar()
+	return zap.New(core, caller, development, skip).Sugar()
 }
 
 // 根据日期分割日志

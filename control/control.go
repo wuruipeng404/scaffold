@@ -27,11 +27,11 @@ type ApiResponse struct {
 }
 
 type BeautyController struct {
-	log *zap.SugaredLogger
+	*zap.SugaredLogger
 }
 
 func NewBeautyControl(log *zap.SugaredLogger) *BeautyController {
-	return &BeautyController{log: log}
+	return &BeautyController{log}
 }
 
 func (c *BeautyController) OK(ctx *gin.Context, data interface{}) {
@@ -48,11 +48,11 @@ func (c *BeautyController) PureOK(ctx *gin.Context) {
 }
 
 func (c *BeautyController) Failed(ctx *gin.Context, err error) {
-	c.log.Errorf("Request [ Failed ] >> %s", err)
+	c.Errorf("Request [ Failed ] >> %s", err)
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err.Error()})
 }
 
 func (c *BeautyController) FailedWithCode(ctx *gin.Context, code int, err error) {
-	c.log.Errorf("Request [ FailedWithCode ] >> %d : %s", code, err)
+	c.Errorf("Request [ FailedWithCode ] >> %d : %s", code, err)
 	ctx.JSON(http.StatusOK, ApiResponse{Code: code, Msg: err.Error()})
 }

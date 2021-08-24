@@ -16,11 +16,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/wuruipeng404/scaffold/logger"
-	"go.uber.org/zap"
 )
 
 type GraceServer struct {
-	*zap.SugaredLogger
 	listen string
 	engine *gin.Engine
 
@@ -33,9 +31,8 @@ type GraceServer struct {
 func NewGraceServer(listen string, engine *gin.Engine) *GraceServer {
 
 	return &GraceServer{
-		listen:        listen,
-		engine:        engine,
-		SugaredLogger: logger.DefaultLogger(),
+		listen: listen,
+		engine: engine,
 	}
 }
 
@@ -59,7 +56,7 @@ func (g *GraceServer) Start() {
 				t()
 			}
 		}
-		_ = g.Sync()
+		logger.Sync()
 
 	}()
 
@@ -81,9 +78,9 @@ func (g *GraceServer) Start() {
 	}
 
 	go func() {
-		g.Info("Server Start ...")
+		logger.Info("Server Start ...")
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			g.Fatalf("listen Error : %s", err.Error())
+			logger.Fatalf("listen Error : %s", err.Error())
 		}
 	}()
 
@@ -99,7 +96,7 @@ func (g *GraceServer) Start() {
 		// syscall.SIGTSTP,
 	)
 	<-quit
-	g.Info("Shutdown Server ...")
+	logger.Info("Shutdown Server ...")
 
 	if len(g.tasks) > 0 {
 		// cancel background task
@@ -109,8 +106,8 @@ func (g *GraceServer) Start() {
 	}
 
 	if err := server.Shutdown(context.TODO()); err != nil {
-		g.Fatalf("Server Shutdown Error : %s ", err.Error())
+		logger.Fatalf("Server Shutdown Error : %s ", err.Error())
 	} else {
-		g.Info("Server Exiting ...")
+		logger.Info("Server Exiting ...")
 	}
 }

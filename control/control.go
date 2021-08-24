@@ -10,7 +10,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
+	"github.com/wuruipeng404/scaffold/logger"
 )
 
 const (
@@ -26,12 +26,10 @@ type ApiResponse struct {
 	Data interface{} `json:"data,omitempty"`
 }
 
-type BeautyController struct {
-	*zap.SugaredLogger
-}
+type BeautyController struct{}
 
-func NewBeautyControl(log *zap.SugaredLogger) *BeautyController {
-	return &BeautyController{log}
+func NewBeautyControl() *BeautyController {
+	return &BeautyController{}
 }
 
 func (c *BeautyController) OK(ctx *gin.Context, data interface{}) {
@@ -48,11 +46,11 @@ func (c *BeautyController) PureOK(ctx *gin.Context) {
 }
 
 func (c *BeautyController) Failed(ctx *gin.Context, err error) {
-	c.Errorf("Request [ Failed ] >> %s", err)
+	logger.Errorf("Request [ Failed ] >> %s", err)
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err.Error()})
 }
 
 func (c *BeautyController) FailedWithCode(ctx *gin.Context, code int, err error) {
-	c.Errorf("Request [ FailedWithCode ] >> %d : %s", code, err)
+	logger.Errorf("Request [ FailedWithCode ] >> %d : %s", code, err)
 	ctx.JSON(http.StatusOK, ApiResponse{Code: code, Msg: err.Error()})
 }

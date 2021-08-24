@@ -10,6 +10,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 const (
@@ -25,10 +26,12 @@ type ApiResponse struct {
 	Data interface{} `json:"data,omitempty"`
 }
 
-type BeautyController struct{}
+type BeautyController struct {
+	*zap.SugaredLogger
+}
 
-func NewBeautyControl() *BeautyController {
-	return new(BeautyController)
+func NewBeautyControl(log *zap.SugaredLogger) *BeautyController {
+	return &BeautyController{log}
 }
 
 func (*BeautyController) OK(c *gin.Context, data interface{}) {

@@ -51,12 +51,12 @@ func NewSugarLogger(path string) *zap.SugaredLogger {
 	)
 
 	// 开启开发模式，堆栈跟踪
-	// caller := zap.AddCaller()
+	caller := zap.AddCaller()
 	// 开启文件及行号
-	// development := zap.Development()
+	development := zap.Development()
 
 	// sugar log 性能稍微差一些,但更符合使用习惯
-	return zap.New(core).Sugar()
+	return zap.New(core, development, caller).Sugar()
 }
 
 // 根据日期分割日志

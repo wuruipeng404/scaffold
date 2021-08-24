@@ -27,30 +27,32 @@ type ApiResponse struct {
 }
 
 type BeautyController struct {
-	*zap.SugaredLogger
+	log *zap.SugaredLogger
 }
 
 func NewBeautyControl(log *zap.SugaredLogger) *BeautyController {
-	return &BeautyController{log}
+	return &BeautyController{log: log}
 }
 
-func (*BeautyController) OK(c *gin.Context, data interface{}) {
-	c.JSON(http.StatusOK, ApiResponse{Code: _Success, Msg: _SuccessMsg, Data: data})
+func (c *BeautyController) OK(ctx *gin.Context, data interface{}) {
+	ctx.JSON(http.StatusOK, ApiResponse{Code: _Success, Msg: _SuccessMsg, Data: data})
 }
 
 // RawOK without code msg
-func (*BeautyController) RawOK(c *gin.Context, data interface{}) {
-	c.JSON(http.StatusOK, data)
+func (c *BeautyController) RawOK(ctx *gin.Context, data interface{}) {
+	ctx.JSON(http.StatusOK, data)
 }
 
-func (*BeautyController) PureOK(c *gin.Context) {
-	c.Status(http.StatusOK)
+func (c *BeautyController) PureOK(ctx *gin.Context) {
+	ctx.Status(http.StatusOK)
 }
 
-func (*BeautyController) Failed(c *gin.Context, err error) {
-	c.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err.Error()})
+func (c *BeautyController) Failed(ctx *gin.Context, err error) {
+	c.log.Errorf("Request [ Failed ] >> %s", err)
+	ctx.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err.Error()})
 }
 
-func (*BeautyController) FailedWithCode(c *gin.Context, code int, err error) {
-	c.JSON(http.StatusOK, ApiResponse{Code: code, Msg: err.Error()})
+func (c *BeautyController) FailedWithCode(ctx *gin.Context, code int, err error) {
+	c.log.Errorf("Request [ FailedWithCode ] >> %d : %s", code, err)
+	ctx.JSON(http.StatusOK, ApiResponse{Code: code, Msg: err.Error()})
 }

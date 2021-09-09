@@ -1,10 +1,10 @@
 /*
 * @Author: Rumple
-* @Email: wrp357711589@gmail.com
-* @DateTime: 2021/8/23 14:28
+* @Email: ruipeng.wu@cyclone-robotics.com
+* @DateTime: 2021/9/9 10:21
  */
 
-package control
+package scaffold
 
 import (
 	"net/http"
@@ -27,10 +27,6 @@ type ApiResponse struct {
 }
 
 type BeautyController struct{}
-
-func NewBeautyControl() *BeautyController {
-	return &BeautyController{}
-}
 
 func (c *BeautyController) OK(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Success, Msg: _SuccessMsg, Data: data})

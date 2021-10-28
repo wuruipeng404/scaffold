@@ -53,10 +53,10 @@ func newConsoleLogger() *zap.SugaredLogger {
 	// )
 
 	// 开启开发模式，堆栈跟踪
-	caller := zap.AddCaller()
+	// caller := zap.AddCaller()
 	// 开启文件及行号
 	development := zap.Development()
 	// skip := zap.AddCallerSkip(1)
 
-	return zap.New(core, caller, development).Sugar()
+	return zap.New(core, development).Sugar()
 }

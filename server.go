@@ -57,6 +57,7 @@ func (g *GraceServer) Start() {
 			}
 		}
 		logger.Sync()
+		_ = log.Sync()
 
 	}()
 
@@ -78,9 +79,9 @@ func (g *GraceServer) Start() {
 	}
 
 	go func() {
-		logger.Info("Server Start ...")
+		log.Info("Server Start ...")
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.Fatalf("listen Error : %s", err.Error())
+			log.Fatalf("listen Error : %s", err.Error())
 		}
 	}()
 
@@ -96,7 +97,7 @@ func (g *GraceServer) Start() {
 		// syscall.SIGTSTP,
 	)
 	<-quit
-	logger.Info("Shutdown Server ...")
+	log.Info("Shutdown Server ...")
 
 	if len(g.tasks) > 0 {
 		// cancel background task
@@ -106,8 +107,8 @@ func (g *GraceServer) Start() {
 	}
 
 	if err := server.Shutdown(context.TODO()); err != nil {
-		logger.Fatalf("Server Shutdown Error : %s ", err.Error())
+		log.Fatalf("Server Shutdown Error : %s ", err.Error())
 	} else {
-		logger.Info("Server Exiting ...")
+		log.Info("Server Exiting ...")
 	}
 }

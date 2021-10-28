@@ -10,7 +10,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/wuruipeng404/scaffold/logger"
 )
 
 const (
@@ -42,11 +41,13 @@ func (c *BeautyController) PureOK(ctx *gin.Context) {
 }
 
 func (c *BeautyController) Failed(ctx *gin.Context, err error) {
-	logger.Errorf("Request [ Failed ] >> %s", err)
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err.Error()})
 }
 
 func (c *BeautyController) FailedWithCode(ctx *gin.Context, code int, err error) {
-	logger.Errorf("Request [ FailedWithCode ] >> %d : %s", code, err)
 	ctx.JSON(http.StatusOK, ApiResponse{Code: code, Msg: err.Error()})
+}
+
+func (c *BeautyController) Response(ctx *gin.Context, resp ApiResponse) {
+	ctx.JSON(http.StatusOK, resp)
 }

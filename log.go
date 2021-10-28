@@ -1,27 +1,26 @@
 /*
 * @Author: Rumple
-* @Email: wrp357711589@gmail.com
-* @DateTime: 2021/8/20 17:21
+* @Email: ruipeng.wu@cyclone-robotics.com
+* @DateTime: 2021/10/28 14:46
  */
 
-package logger
+package scaffold
 
 import (
-	"io"
 	"os"
-	"time"
 
-	"github.com/lestrrat-go/file-rotatelogs"
-	"github.com/wuruipeng404/scaffold/util"
+	"github.com/wuruipeng404/scaffold/logger"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-func TimeFormatFunc(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-	enc.AppendString(t.Format(util.TimeFormatString))
+var log *zap.SugaredLogger
+
+func init() {
+	log = newConsoleLogger()
 }
 
-func newSugarLogger(path string) *zap.SugaredLogger {
+func newConsoleLogger() *zap.SugaredLogger {
 
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "time",
@@ -32,16 +31,15 @@ func newSugarLogger(path string) *zap.SugaredLogger {
 		StacktraceKey:  "stacktrace",
 		LineEnding:     zapcore.DefaultLineEnding,
 		EncodeLevel:    zapcore.CapitalColorLevelEncoder,
-		EncodeTime:     TimeFormatFunc, // 时间格式
+		EncodeTime:     logger.TimeFormatFunc, // 时间格式
 		EncodeDuration: zapcore.SecondsDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 		EncodeName:     zapcore.FullNameEncoder,
 	}
 
 	encoder := zapcore.NewConsoleEncoder(encoderConfig)
-	hook := zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(logWriter(path)))
+	hook := zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout))
 	level := zap.NewAtomicLevelAt(zap.DebugLevel)
-
 	core := zapcore.NewCore(encoder, hook, level)
 	// infoHook := zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(logWriter(path)))
 	// errorHook := zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(logWriter(path+".error")))
@@ -58,22 +56,7 @@ func newSugarLogger(path string) *zap.SugaredLogger {
 	caller := zap.AddCaller()
 	// 开启文件及行号
 	development := zap.Development()
-	skip := zap.AddCallerSkip(1)
+	// skip := zap.AddCallerSkip(1)
 
-	return zap.New(core, caller, development, skip).Sugar()
-}
-
-// 根据日期分割日志
-func logWriter(filename string) io.Writer {
-	hook, err := rotatelogs.New(
-		filename+".%Y-%m-%d",
-		rotatelogs.WithLinkName(filename),
-		rotatelogs.WithMaxAge(time.Hour*24*7),
-		rotatelogs.WithRotationTime(time.Hour),
-	)
-
-	if err != nil {
-		panic(err)
-	}
-	return hook
+	return zap.New(core, caller, development).Sugar()
 }

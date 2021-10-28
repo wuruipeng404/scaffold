@@ -66,5 +66,7 @@ func Fatalf(template string, args ...interface{}) {
 }
 
 func Sync() {
-	_ = _log.Sync()
+	if _log != nil {
+		_ = _log.Sync()
+	}
 }

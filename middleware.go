@@ -7,10 +7,13 @@
 package scaffold
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/wuruipeng404/scaffold/util"
 )
 
 func DefaultCorsMap() map[string]string {
@@ -64,4 +67,26 @@ func NewCorsWithDefault(headers map[string]string) gin.HandlerFunc {
 			c.AbortWithStatus(http.StatusOK)
 		}
 	}
+}
+
+func GracefulLogger() gin.HandlerFunc {
+	return gin.LoggerWithFormatter(func(params gin.LogFormatterParams) string {
+
+		statusColor := params.StatusCodeColor()
+		methodColor := params.MethodColor()
+		resetColor := params.ResetColor()
+
+		if params.Latency > time.Minute {
+			params.Latency = params.Latency - params.Latency%time.Second
+		}
+		return fmt.Sprintf("[GIN] %s [%s] \"%s %s %s %s %s %d %s %s\" \"%s\" \n",
+			params.TimeStamp.Format(util.TimeFormatString),
+			params.ClientIP,
+			methodColor, params.Method, resetColor,
+			params.Path,
+			statusColor, params.StatusCode, resetColor,
+			params.Latency,
+			params.ErrorMessage,
+		)
+	})
 }

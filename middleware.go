@@ -79,13 +79,13 @@ func GracefulLogger() gin.HandlerFunc {
 		if params.Latency > time.Minute {
 			params.Latency = params.Latency - params.Latency%time.Second
 		}
-		return fmt.Sprintf("[GIN] %s [%s] \"%s %s %s %s %s %d %s %s\" \"%s\" \n",
+		return fmt.Sprintf("%v |%s %3d %s| %13v | %15s |%s %-7s %s %#v\n%s",
 			params.TimeStamp.Format(util.TimeFormatString),
+			statusColor, params.StatusCode, resetColor,
+			params.Latency,
 			params.ClientIP,
 			methodColor, params.Method, resetColor,
 			params.Path,
-			statusColor, params.StatusCode, resetColor,
-			params.Latency,
 			params.ErrorMessage,
 		)
 	})

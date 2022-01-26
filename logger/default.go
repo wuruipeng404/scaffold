@@ -17,6 +17,10 @@ func InitLogger(path string) {
 	_log = newSugarLogger(path)
 }
 
+func NewLogger(path string) *zap.SugaredLogger {
+	return newSugarLogger(path)
+}
+
 func Debug(args ...interface{}) {
 	_log.Debug(args...)
 }

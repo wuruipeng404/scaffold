@@ -11,7 +11,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/lestrrat-go/file-rotatelogs"
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/wuruipeng404/scaffold/util"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

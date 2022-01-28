@@ -44,10 +44,6 @@ func (c *BeautyController) Failed(ctx *gin.Context, err error) {
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err.Error()})
 }
 
-func (c *BeautyController) FailedWithCode(ctx *gin.Context, code int, err error) {
-	ctx.JSON(http.StatusOK, ApiResponse{Code: code, Msg: err.Error()})
-}
-
-func (c *BeautyController) Response(ctx *gin.Context, resp ApiResponse) {
-	ctx.JSON(http.StatusOK, resp)
+func (c *BeautyController) FailedWithError(ctx *gin.Context, err IError) {
+	ctx.JSON(http.StatusOK, ApiResponse{Code: err.Code(), Msg: err.Message()})
 }

@@ -21,7 +21,7 @@ func TimeFormatFunc(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format(util.TimeFormatString))
 }
 
-func newSugarLogger(path string) *zap.SugaredLogger {
+func newSugarLogger(path string, skip int) *zap.SugaredLogger {
 
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "time",
@@ -58,9 +58,9 @@ func newSugarLogger(path string) *zap.SugaredLogger {
 	caller := zap.AddCaller()
 	// 开启文件及行号
 	development := zap.Development()
-	skip := zap.AddCallerSkip(1)
+	skipOpt := zap.AddCallerSkip(skip)
 
-	return zap.New(core, caller, development, skip).Sugar()
+	return zap.New(core, caller, development, skipOpt).Sugar()
 }
 
 // 根据日期分割日志

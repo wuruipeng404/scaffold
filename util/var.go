@@ -18,8 +18,11 @@ var (
 )
 
 type SwagBase struct {
-	Code       int    `json:"code" example:"0"`          // 响应码 非0即为失败
-	Msg        string `json:"msg" example:"success"`     // msg
+	Code int    `json:"code" example:"0"`      // 响应码 非0即为失败
+	Msg  string `json:"msg" example:"success"` // msg
+}
+
+type SwagPage struct {
 	TotalCount int64  `json:"total_count" example:"100"` // 列表数据总数
 	TotalPage  int64  `json:"total_page" example:"10"`   // 列表页总数
 	PageCount  int64  `json:"page_count" example:"10"`   // 当前页数量

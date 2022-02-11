@@ -21,16 +21,34 @@ const (
 	_SuccessMsg = "success"
 )
 
+type ApiPage struct {
+	TotalCount int64  `json:"total_count,omitempty"` // 列表数据总数
+	TotalPage  int64  `json:"total_page,omitempty"`  // 列表页总数
+	PageCount  int64  `json:"page_count,omitempty"`  // 当前页数量
+	PageIndex  int64  `json:"page_index,omitempty"`  // 当前页码
+	Sort       string `json:"sort,omitempty"`        // 排序
+}
+
 type ApiResponse struct {
-	Code int         `json:"code"`
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data,omitempty"`
+	Code    int         `json:"code"`
+	Msg     string      `json:"msg"`
+	Data    interface{} `json:"data,omitempty"`
+	ApiPage `json:",inline"`
 }
 
 type BeautyController struct{}
 
 func (c *BeautyController) OK(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Success, Msg: _SuccessMsg, Data: data})
+}
+
+func (c *BeautyController) PageOk(ctx *gin.Context, data interface{}, page ApiPage) {
+	ctx.JSON(http.StatusOK, ApiResponse{
+		Code:    _Success,
+		Msg:     _SuccessMsg,
+		Data:    data,
+		ApiPage: page,
+	})
 }
 
 // RawOK without code msg

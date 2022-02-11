@@ -7,9 +7,11 @@
 package scaffold
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/wuruipeng404/scaffold/er"
 )
 
 const (
@@ -40,10 +42,14 @@ func (c *BeautyController) PureOK(ctx *gin.Context) {
 	ctx.Status(http.StatusOK)
 }
 
-func (c *BeautyController) Failed(ctx *gin.Context, err error) {
+func (c *BeautyController) FailedE(ctx *gin.Context, err error) {
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Failure, Msg: err.Error()})
 }
 
-func (c *BeautyController) FailedWithError(ctx *gin.Context, err IError) {
-	ctx.JSON(http.StatusOK, ApiResponse{Code: err.Code(), Msg: err.Message()})
+func (c *BeautyController) Failed(ctx *gin.Context, ie er.IError) {
+	ctx.JSON(http.StatusOK, ApiResponse{Code: ie.Code(), Msg: ie.Message()})
+}
+
+func (c *BeautyController) FailedDyn(ctx *gin.Context, ie er.IError, err error) {
+	ctx.JSON(http.StatusOK, ApiResponse{Code: ie.Code(), Msg: fmt.Sprintf("%s %s", ie.Message(), err)})
 }

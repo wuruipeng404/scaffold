@@ -4,7 +4,7 @@
 * @DateTime: 2022/1/28 11:22
  */
 
-package scaffold
+package er
 
 type IError interface {
 	Code() int
@@ -24,7 +24,7 @@ func (e SError) Message() string {
 	return e.message
 }
 
-func NewError(code int, message string) IError {
+func New(code int, message string) IError {
 	return &SError{
 		code:    code,
 		message: message,

@@ -36,3 +36,13 @@ func JwtParseToken(secret, token string) (sub string, err error) {
 	sub = claim.Claims.(jwt.MapClaims)["sub"].(string)
 	return
 }
+
+func JwtParseInfo(token string) (result jwt.MapClaims, err error) {
+
+	claim, err := jwt.Parse(token, nil)
+	if claim == nil {
+		return nil, err
+	}
+
+	return claim.Claims.(jwt.MapClaims), nil
+}

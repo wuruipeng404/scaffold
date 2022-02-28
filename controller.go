@@ -38,6 +38,10 @@ type ApiResponse struct {
 
 type BeautyController struct{}
 
+func (c *BeautyController) TraceId(ctx *gin.Context) string {
+	return ctx.GetHeader(_TraceKey)
+}
+
 func (c *BeautyController) OK(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Success, Msg: _SuccessMsg, Data: data})
 }

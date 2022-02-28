@@ -13,8 +13,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/wuruipeng404/scaffold/util"
 )
+
+const _TraceKey = "trace-id"
 
 func DefaultCorsMap() map[string]string {
 	return map[string]string{
@@ -63,10 +66,27 @@ func NewCorsWithDefault(headers map[string]string) gin.HandlerFunc {
 		for k, v := range headers {
 			c.Writer.Header().Set(k, v)
 		}
+
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusOK)
 		}
 	}
+}
+
+func Trace() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		traceId := c.GetHeader(_TraceKey)
+		if traceId == "" {
+			traceId = genTraceId()
+		}
+		c.Set(_TraceKey, traceId)
+		c.Header("R-Request-Trace", traceId)
+		c.Next()
+	}
+}
+
+func genTraceId() string {
+	return util.Md5([]byte(uuid.New().String()))[5:16]
 }
 
 func GracefulLogger() gin.HandlerFunc {

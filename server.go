@@ -46,7 +46,7 @@ func (g *GraceServer) AddDeferFunc(tasks ...func()) {
 	g.deferTasks = append(g.deferTasks, tasks...)
 }
 
-// Start 没有stop方法 因为没必要
+// Start no stop method, because no need for
 func (g *GraceServer) Start() {
 
 	defer func() {

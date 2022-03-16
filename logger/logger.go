@@ -11,7 +11,7 @@ import (
 	"os"
 	"time"
 
-	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	rotateLogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/wuruipeng404/scaffold/util"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -65,11 +65,11 @@ func newSugarLogger(path string, skip int) *zap.SugaredLogger {
 
 // 根据日期分割日志
 func logWriter(filename string) io.Writer {
-	hook, err := rotatelogs.New(
+	hook, err := rotateLogs.New(
 		filename+".%Y-%m-%d",
-		rotatelogs.WithLinkName(filename),
-		rotatelogs.WithMaxAge(time.Hour*24*7),
-		rotatelogs.WithRotationTime(time.Hour),
+		rotateLogs.WithLinkName(filename),
+		rotateLogs.WithMaxAge(time.Hour*24*7),
+		rotateLogs.WithRotationTime(time.Hour),
 	)
 
 	if err != nil {

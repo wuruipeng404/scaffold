@@ -11,21 +11,21 @@ type IError interface {
 	Message() string
 }
 
-type SError struct {
+type _Error struct {
 	code    int
 	message string
 }
 
-func (e SError) Code() int {
+func (e _Error) Code() int {
 	return e.code
 }
 
-func (e SError) Message() string {
+func (e _Error) Message() string {
 	return e.message
 }
 
 func New(code int, message string) IError {
-	return &SError{
+	return &_Error{
 		code:    code,
 		message: message,
 	}

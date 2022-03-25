@@ -30,9 +30,9 @@ type ApiPage struct {
 }
 
 type ApiResponse struct {
-	Code    int         `json:"code"`
-	Msg     string      `json:"msg"`
-	Data    interface{} `json:"data,omitempty"`
+	Code    int    `json:"code"`
+	Msg     string `json:"msg"`
+	Data    any    `json:"data,omitempty"`
 	ApiPage `json:",inline"`
 }
 
@@ -43,12 +43,12 @@ func (c *BeautyController) TraceId(ctx *gin.Context) string {
 }
 
 // OK response with data
-func (c *BeautyController) OK(ctx *gin.Context, data interface{}) {
+func (c *BeautyController) OK(ctx *gin.Context, data any) {
 	ctx.JSON(http.StatusOK, ApiResponse{Code: _Success, Msg: _SuccessMsg, Data: data})
 }
 
 // PageOk response with page data
-func (c *BeautyController) PageOk(ctx *gin.Context, data interface{}, page ApiPage) {
+func (c *BeautyController) PageOk(ctx *gin.Context, data any, page ApiPage) {
 	ctx.JSON(http.StatusOK, ApiResponse{
 		Code:    _Success,
 		Msg:     _SuccessMsg,
@@ -58,7 +58,7 @@ func (c *BeautyController) PageOk(ctx *gin.Context, data interface{}, page ApiPa
 }
 
 // RawOK without code msg
-func (c *BeautyController) RawOK(ctx *gin.Context, data interface{}) {
+func (c *BeautyController) RawOK(ctx *gin.Context, data any) {
 	ctx.JSON(http.StatusOK, data)
 }
 
@@ -78,7 +78,7 @@ func (c *BeautyController) FailedC(ctx *gin.Context, code int, message string) {
 }
 
 // FailedD with IError and Data
-func (c *BeautyController) FailedD(ctx *gin.Context, ie er.IError, data interface{}) {
+func (c *BeautyController) FailedD(ctx *gin.Context, ie er.IError, data any) {
 	ctx.JSON(http.StatusOK, ApiResponse{Code: ie.Code(), Msg: ie.Message(), Data: data})
 }
 

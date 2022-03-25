@@ -12,12 +12,15 @@ import (
 	"io"
 	"math/rand"
 	"mime/multipart"
-	"strconv"
 	"time"
 )
 
-// InArray todo: Generic
-func InArray(value string, values []string) bool {
+type Element interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | string |
+	~float32 | ~float64 | bool
+}
+
+func InArray[T Element](value T, values []T) bool {
 	for _, v := range values {
 		if v == value {
 			return true
@@ -32,6 +35,7 @@ func Md5(data []byte) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+// FileMd5 todo: large file hash
 func FileMd5(file multipart.File) (string, error) {
 	hash := md5.New()
 	if _, err := io.Copy(hash, file); err != nil {
@@ -41,7 +45,6 @@ func FileMd5(file multipart.File) (string, error) {
 	if _, err := file.Seek(0, 0); err != nil {
 		return "", err
 	}
-
 	return hex.EncodeToString(hash.Sum(nil)), nil
 }
 
@@ -58,22 +61,22 @@ func UTCNow() time.Time {
 	return time.Now().UTC().Truncate(time.Millisecond)
 }
 
-func IF(env, defaultValue string) string {
+func IF(env string, def string) string {
 	if env == "" {
-		return defaultValue
+		return def
 	}
 	return env
 }
 
-// IFNum from env get int value // todo: Generic
-func IFNum(env string, defaultValue int) int {
-	if env == "" {
-		return defaultValue
-	}
-
-	if value, err := strconv.Atoi(env); err != nil {
-		return defaultValue
-	} else {
-		return value
-	}
-}
+// // IFNum from env get int value // todo: Generic
+// func IFNum(env string, defaultValue int) int {
+// 	if env == "" {
+// 		return defaultValue
+// 	}
+//
+// 	if value, err := strconv.Atoi(env); err != nil {
+// 		return defaultValue
+// 	} else {
+// 		return value
+// 	}
+// }

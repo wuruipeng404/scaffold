@@ -18,7 +18,7 @@ import (
 )
 
 func TimeFormatFunc(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-	enc.AppendString(t.Format(util.TimeFormatString))
+	enc.AppendString(t.Format(util.TimeFormatMill))
 }
 
 func newSugarLogger(path string, skip int) *zap.SugaredLogger {

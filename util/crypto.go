@@ -37,13 +37,16 @@ func (ac *AesCBC) Encrypt(plaintext string) (chipText string, err error) {
 	if block, err = aes.NewCipher([]byte(ac.key)); err != nil {
 		return
 	}
+
 	blockSize := block.BlockSize()
 	padding := PKCS7Padding([]byte(plaintext), blockSize)
 	cipherText := make([]byte, blockSize+len(padding))
 	iv := cipherText[:block.BlockSize()]
+
 	if _, err = io.ReadFull(rand.Reader, iv); err != nil {
 		return
 	}
+
 	cip := cipher.NewCBCEncrypter(block, iv)
 	cip.CryptBlocks(cipherText[blockSize:], padding)
 
@@ -69,9 +72,11 @@ func (ac *AesCBC) Decrypt(chipText string) (plaintext string, err error) {
 	blockSize := block.BlockSize()
 
 	if ac.isBase64 {
+
 		if chipperText, err = base64.StdEncoding.DecodeString(chipText); err != nil {
 			return "", fmt.Errorf("wrong param :%s", err)
 		}
+
 	} else {
 		chipperText = []byte(chipText)
 	}
@@ -82,9 +87,11 @@ func (ac *AesCBC) Decrypt(chipText string) (plaintext string, err error) {
 
 	iv := chipperText[:blockSize]
 	chipperText = chipperText[blockSize:]
+
 	if len(chipperText)%blockSize != 0 {
 		return "", errors.New("ciphertext is not a multiple of the block size")
 	}
+
 	cip := cipher.NewCBCDecrypter(block, iv)
 	cip.CryptBlocks(chipperText, chipperText)
 	chipperText = PKCS7UnPadding(chipperText)
@@ -93,13 +100,17 @@ func (ac *AesCBC) Decrypt(chipText string) (plaintext string, err error) {
 }
 
 func PKCS7UnPadding(plantText []byte) []byte {
+
 	length := len(plantText)
 	unPadding := int(plantText[length-1])
+
 	return plantText[:(length - unPadding)]
 }
 
 func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
+
 	padding := blockSize - len(ciphertext)%blockSize
 	padText := bytes.Repeat([]byte{byte(padding)}, padding)
+
 	return append(ciphertext, padText...)
 }

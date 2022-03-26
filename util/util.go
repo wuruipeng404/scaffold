@@ -12,12 +12,13 @@ import (
 	"io"
 	"math/rand"
 	"mime/multipart"
+	"os"
 	"time"
 )
 
 type Element interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | string |
-	~float32 | ~float64 | bool
+		~float32 | ~float64 | bool
 }
 
 func InArray[T Element](value T, values []T) bool {
@@ -61,22 +62,10 @@ func UTCNow() time.Time {
 	return time.Now().UTC().Truncate(time.Millisecond)
 }
 
-func IF(env string, def string) string {
-	if env == "" {
+func Env(env string, def string) string {
+	v := os.Getenv(env)
+	if v == "" {
 		return def
 	}
-	return env
+	return v
 }
-
-// // IFNum from env get int value // todo: Generic
-// func IFNum(env string, defaultValue int) int {
-// 	if env == "" {
-// 		return defaultValue
-// 	}
-//
-// 	if value, err := strconv.Atoi(env); err != nil {
-// 		return defaultValue
-// 	} else {
-// 		return value
-// 	}
-// }

@@ -8,9 +8,10 @@ package util
 
 const (
 	TimeFormatStandard = "2006-01-02 15:04:05"
-	TimeFormatMill     = "2006-01-02 15:04:05.000"
-	RandomStrSeed      = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	RandomStrLowerSeed = "abcdefghijklmnopqrstuvwxyz0123456789"
+	TimeFormatMill     = TimeFormatStandard + ".000"
+	RandomStrNumber    = "0123456789"
+	RandomStrLowerSeed = "abcdefghijklmnopqrstuvwxyz" + RandomStrNumber
+	RandomStrSeed      = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + RandomStrLowerSeed
 )
 
 var (

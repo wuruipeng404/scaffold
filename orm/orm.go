@@ -1,7 +1,6 @@
 package orm
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -37,7 +36,7 @@ type InitOption struct {
 	LogLevel        glog.LogLevel
 }
 
-func Init(opt *InitOption) error {
+func Init(opt *InitOption) {
 	var (
 		err     error
 		dsn     string
@@ -48,7 +47,7 @@ func Init(opt *InitOption) error {
 	)
 
 	if opt == nil {
-		return errors.New("orm options need")
+		log.Fatal("orm options need")
 	}
 
 	if opt.MaxIdleConn == 0 {
@@ -104,23 +103,21 @@ func Init(opt *InitOption) error {
 
 		dia = postgres.Open(dsn)
 	default:
-		return fmt.Errorf("unsupported db type:%s", opt.Type)
+		log.Fatalf("unsupported db type:%s", opt.Type)
 	}
 
 	if cli, err = gorm.Open(dia, ormConf); err != nil {
-		return fmt.Errorf("gorm open error:%s", err)
+		log.Fatalf("gorm open error:%s", err)
 	}
 
 	sqlDb, err := cli.DB()
 	if err != nil {
-		return fmt.Errorf("get sql db error:%s", err)
+		log.Fatalf("get sql db error:%s", err)
 	}
 
 	sqlDb.SetMaxIdleConns(opt.MaxIdleConn)
 	sqlDb.SetMaxOpenConns(opt.MaxOpenConn)
 	sqlDb.SetConnMaxLifetime(opt.ConnMaxLifetime)
-
-	return nil
 }
 
 func C() *gorm.DB {

@@ -8,6 +8,7 @@ package logger
 
 import (
 	"io"
+	"log"
 	"os"
 	"time"
 
@@ -73,7 +74,7 @@ func logWriter(filename string) io.Writer {
 	)
 
 	if err != nil {
-		panic(err)
+		log.Fatalf("rotate logger error:%s", err)
 	}
 	return hook
 }

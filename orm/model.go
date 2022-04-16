@@ -11,7 +11,7 @@ import (
 type Model struct {
 	ID        uint           `gorm:"primarykey" json:"id"`
 	CreatedAt time.Time      `gorm:"index" json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
+	UpdatedAt time.Time      `gorm:"index" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
 
@@ -19,7 +19,7 @@ type Model struct {
 type UModel struct {
 	ID        string         `gorm:"primarykey" json:"id"`
 	CreatedAt time.Time      `gorm:"index" json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
+	UpdatedAt time.Time      `gorm:"index" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
 

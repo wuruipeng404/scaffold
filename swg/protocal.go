@@ -1,4 +1,4 @@
-package swag
+package swg
 
 type CodeMsg struct {
 	Code int    `json:"code" example:"0"`      // 响应码 非0即为失败

@@ -31,7 +31,7 @@ func DefaultCorsMap() map[string]string {
 }
 
 func DefaultAllowHeaders() []string {
-	return []string{"Origin", "Content-Type", "Content-Length", " Accept-Encoding", "X-CSRF-VerifyToken", "Authorization"}
+	return []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-VerifyToken", "Authorization"}
 }
 
 // Cors 处理跨域请求

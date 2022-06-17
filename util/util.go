@@ -18,7 +18,7 @@ import (
 
 type Element interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | string |
-		~float32 | ~float64 | bool
+	~float32 | ~float64 | bool
 }
 
 func InArray[T Element](value T, values []T) bool {
@@ -36,7 +36,6 @@ func Md5(data []byte) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-// FileMd5 todo: large file hash
 func FileMd5(file multipart.File) (string, error) {
 	hash := md5.New()
 	if _, err := io.Copy(hash, file); err != nil {

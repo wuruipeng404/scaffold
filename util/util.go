@@ -18,7 +18,7 @@ import (
 
 type Element interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | string |
-		~float32 | ~float64 | bool
+	~float32 | ~float64 | bool
 }
 
 func InArray[T Element](value T, values []T) bool {
@@ -30,7 +30,13 @@ func InArray[T Element](value T, values []T) bool {
 	return false
 }
 
-func Md5(reader io.Reader) string {
+func Md5(data []byte) string {
+	h := md5.New()
+	h.Write(data)
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+func Md5IO(reader io.Reader) string {
 	buf := make([]byte, 1024*1024)
 	h := md5.New()
 

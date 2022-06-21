@@ -27,7 +27,7 @@ func JwtParseToken(secret, token string) (sub string, err error) {
 		claim *jwt.Token
 	)
 
-	if claim, err = jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+	if claim, err = jwt.Parse(token, func(token *jwt.Token) (any, error) {
 		return []byte(secret), nil
 	}); err != nil {
 		return

@@ -21,51 +21,51 @@ func NewLogger(path string, skip int) *zap.SugaredLogger {
 	return newSugarLogger(path, skip)
 }
 
-func Debug(args ...interface{}) {
+func Debug(args ...any) {
 	_log.Debug(args...)
 }
 
-func Debugf(template string, args ...interface{}) {
+func Debugf(template string, args ...any) {
 	_log.Debugf(template, args...)
 }
 
-func Info(args ...interface{}) {
+func Info(args ...any) {
 	_log.Info(args...)
 }
 
-func Infof(template string, args ...interface{}) {
+func Infof(template string, args ...any) {
 	_log.Infof(template, args...)
 }
 
-func Error(args ...interface{}) {
+func Error(args ...any) {
 	_log.Error(args...)
 }
 
-func Errorf(template string, args ...interface{}) {
+func Errorf(template string, args ...any) {
 	_log.Errorf(template, args...)
 }
 
-func Warn(args ...interface{}) {
+func Warn(args ...any) {
 	_log.Warn(args...)
 }
 
-func Warnf(template string, args ...interface{}) {
+func Warnf(template string, args ...any) {
 	_log.Warnf(template, args...)
 }
 
-func Panic(args ...interface{}) {
+func Panic(args ...any) {
 	_log.Panic(args...)
 }
 
-func Panicf(template string, args ...interface{}) {
+func Panicf(template string, args ...any) {
 	_log.Panicf(template, args...)
 }
 
-func Fatal(args ...interface{}) {
+func Fatal(args ...any) {
 	_log.Fatal(args...)
 }
 
-func Fatalf(template string, args ...interface{}) {
+func Fatalf(template string, args ...any) {
 	_log.Fatalf(template, args...)
 }
 

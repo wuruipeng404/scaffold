@@ -18,7 +18,7 @@ import (
 
 type Element interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | string |
-	~float32 | ~float64 | bool
+		~float32 | ~float64 | bool
 }
 
 func InArray[T Element](value T, values []T) bool {

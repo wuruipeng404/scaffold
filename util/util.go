@@ -8,10 +8,10 @@ package util
 
 import (
 	"crypto/md5"
+	"encoding/base64"
 	"encoding/hex"
 	"io"
 	"math/rand"
-	"mime/multipart"
 	"os"
 	"time"
 )
@@ -30,22 +30,49 @@ func InArray[T Element](value T, values []T) bool {
 	return false
 }
 
-func Md5(data []byte) string {
+func Md5(reader io.Reader) string {
+	buf := make([]byte, 1024*1024)
 	h := md5.New()
-	h.Write(data)
+
+	for {
+		n, err := reader.Read(buf)
+		if err != nil {
+			if err != io.EOF {
+				return ""
+			}
+			break
+		}
+
+		if n == 0 {
+			break
+		}
+
+		h.Write(buf[:n])
+	}
+
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func FileMd5(file multipart.File) (string, error) {
-	hash := md5.New()
-	if _, err := io.Copy(hash, file); err != nil {
-		return "", err
+func B64Encode(input io.Reader, output io.Writer) (err error) {
+
+	encoder := base64.NewEncoder(base64.StdEncoding, output)
+	if _, err = io.Copy(encoder, input); err != nil {
+		return err
 	}
-	// reset reader seek
-	if _, err := file.Seek(0, 0); err != nil {
-		return "", err
+
+	if err = encoder.Close(); err != nil {
+		return err
 	}
-	return hex.EncodeToString(hash.Sum(nil)), nil
+
+	return nil
+}
+
+func B64Decode(input io.Reader, output io.Writer) (err error) {
+	decoder := base64.NewDecoder(base64.StdEncoding, input)
+	if _, err = io.Copy(output, decoder); err != nil {
+		return err
+	}
+	return nil
 }
 
 func RandomStr(n int) string {
@@ -61,10 +88,10 @@ func UTCNow() time.Time {
 	return time.Now().UTC().Truncate(time.Millisecond)
 }
 
-func Env(env string, def string) string {
+func Env(env string, dft string) string {
 	v := os.Getenv(env)
 	if v == "" {
-		return def
+		return dft
 	}
 	return v
 }

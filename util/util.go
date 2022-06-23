@@ -13,21 +13,32 @@ import (
 	"io"
 	"math/rand"
 	"os"
+	"reflect"
 	"time"
 )
 
-type Element interface {
-	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | string |
-		~float32 | ~float64 | bool
-}
+func InArray[T any](value T, values []T) bool {
 
-func InArray[T Element](value T, values []T) bool {
-	for _, v := range values {
-		if v == value {
-			return true
-		}
+	vv := reflect.ValueOf(value)
+	vsv := reflect.ValueOf(values)
+
+	if vsv.Kind() != reflect.Slice {
+		return false
 	}
-	return false
+
+	switch vv.Kind() {
+	case reflect.Interface, reflect.Func, reflect.Chan, reflect.Invalid:
+		return false
+
+	default:
+		for _, i := range values {
+			if reflect.DeepEqual(value, i) {
+				return true
+			}
+		}
+
+		return false
+	}
 }
 
 func Md5(data []byte) string {

@@ -8,17 +8,34 @@ package logger
 
 import (
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"io"
+	"os"
 )
 
 var _log *zap.SugaredLogger
 
-// InitLogger InitDefaultLogger default logger with name, should be init call it
-func InitLogger(path string) {
-	_log = newSugarLogger(path, 1)
+type InitOption struct {
+	loglevel zapcore.Level // default debug
+	writers  []io.Writer   // default os.stdout
+	skip     int           // default 1
 }
 
-func NewLogger(path string, skip int) *zap.SugaredLogger {
-	return newSugarLogger(path, skip)
+// InitLogger InitDefaultLogger default logger with name, should be init call it
+func InitLogger() {
+	_log = NewSugarLogger(&InitOption{
+		loglevel: zap.DebugLevel,
+		writers:  []io.Writer{os.Stdout},
+		skip:     1,
+	})
+}
+
+func InitPersistenceLogger(filename string) {
+	_log = NewSugarLogger(&InitOption{
+		loglevel: zap.DebugLevel,
+		writers:  []io.Writer{os.Stdout, NewRotateLogger(filename)},
+		skip:     1,
+	})
 }
 
 func Debug(args ...any) {

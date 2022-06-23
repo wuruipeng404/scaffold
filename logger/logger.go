@@ -22,9 +22,21 @@ func TimeFormatFunc(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format(util.TimeFormatMill))
 }
 
-func newSugarLogger(path string, skip int) *zap.SugaredLogger {
+func NewSugarLogger(option *InitOption) *zap.SugaredLogger {
 
-	encoderConfig := zapcore.EncoderConfig{
+	if option == nil {
+		option = &InitOption{
+			loglevel: zap.DebugLevel,
+			writers:  []io.Writer{os.Stdout},
+			skip:     1,
+		}
+	} else {
+		if len(option.writers) == 0 {
+			option.writers = append(option.writers, os.Stdout)
+		}
+	}
+
+	encoder := zapcore.NewConsoleEncoder(zapcore.EncoderConfig{
 		TimeKey:        "time",
 		LevelKey:       "level",
 		NameKey:        "logger",
@@ -37,31 +49,25 @@ func newSugarLogger(path string, skip int) *zap.SugaredLogger {
 		EncodeDuration: zapcore.SecondsDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 		EncodeName:     zapcore.FullNameEncoder,
+	})
+
+	var syncer []zapcore.WriteSyncer
+
+	for _, i := range option.writers {
+		syncer = append(syncer, zapcore.AddSync(i))
 	}
 
-	encoder := zapcore.NewConsoleEncoder(encoderConfig)
-	hook := zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(logWriter(path)))
-	level := zap.NewAtomicLevelAt(zap.DebugLevel)
+	hook := zapcore.NewMultiWriteSyncer(syncer...)
+	level := zap.NewAtomicLevelAt(option.loglevel)
 
 	core := zapcore.NewCore(encoder, hook, level)
-	// infoHook := zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(logWriter(path)))
-	// errorHook := zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(logWriter(path+".error")))
-	//
-	// infoLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool { return lvl < zapcore.ErrorLevel })
-	// errorLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool { return lvl >= zapcore.ErrorLevel })
-	//
-	// core := zapcore.NewTee(
-	// 	zapcore.NewCore(encoder, infoHook, infoLevel),
-	// 	zapcore.NewCore(encoder, errorHook, errorLevel),
-	// )
-
 	// 开启开发模式，堆栈跟踪
 	caller := zap.AddCaller()
 	// 开启文件及行号
-	development := zap.Development()
-	skipOpt := zap.AddCallerSkip(skip)
+	dev := zap.Development()
+	skip := zap.AddCallerSkip(option.skip)
 
-	return zap.New(core, caller, development, skipOpt).Sugar()
+	return zap.New(core, caller, dev, skip).Sugar()
 }
 
 // 根据日期分割日志
@@ -77,4 +83,8 @@ func logWriter(filename string) io.Writer {
 		log.Fatalf("rotate logger error:%s", err)
 	}
 	return hook
+}
+
+func NewRotateLogger(filename string) io.Writer {
+	return logWriter(filename)
 }

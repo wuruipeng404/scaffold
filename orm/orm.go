@@ -30,19 +30,21 @@ type InitOption struct {
 	Host   string
 	Port   int
 
-	MaxIdleConn     int
-	MaxOpenConn     int
-	ConnMaxLifetime time.Duration
-	LogLevel        glog.LogLevel
+	MaxIdleConn            int
+	MaxOpenConn            int
+	ConnMaxLifetime        time.Duration
+	LogLevel               glog.LogLevel
+	SkipDefaultTransaction bool
 }
 
 func Init(opt *InitOption) {
 	var (
-		err     error
-		dsn     string
-		dia     gorm.Dialector
-		ormConf = &gorm.Config{
-			PrepareStmt: true,
+		err  error
+		dsn  string
+		dia  gorm.Dialector
+		conf = &gorm.Config{
+			PrepareStmt:            true,
+			SkipDefaultTransaction: opt.SkipDefaultTransaction,
 		}
 	)
 
@@ -75,12 +77,12 @@ func Init(opt *InitOption) {
 				SlowThreshold:             time.Second,  // 慢 SQL 阈值
 				LogLevel:                  opt.LogLevel, // 日志级别
 				IgnoreRecordNotFoundError: true,         // 忽略ErrRecordNotFound（记录未找到）错误
-				Colorful:                  false,        // 禁用彩色打印
+				Colorful:                  true,         // 彩色打印
 			},
 		)
-		ormConf.Logger = newLogger
+		conf.Logger = newLogger
 	} else {
-		ormConf.Logger = glog.Default.LogMode(glog.Silent)
+		conf.Logger = glog.Default.LogMode(glog.Error)
 	}
 
 	switch opt.Type {
@@ -106,7 +108,7 @@ func Init(opt *InitOption) {
 		log.Fatalf("unsupported db type:%s", opt.Type)
 	}
 
-	if cli, err = gorm.Open(dia, ormConf); err != nil {
+	if cli, err = gorm.Open(dia, conf); err != nil {
 		log.Fatalf("gorm open error:%s", err)
 	}
 

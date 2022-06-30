@@ -23,7 +23,7 @@ type UModel struct {
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
 
-func (m *UModel) BeforeCreate(tx *gorm.DB) error {
+func (m *UModel) BeforeCreate(_ *gorm.DB) error {
 	m.ID = uuid.NewString()
 	return nil
 }

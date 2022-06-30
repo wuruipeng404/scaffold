@@ -47,7 +47,7 @@ func Md5(data []byte) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func Md5IO(reader io.Reader) string {
+func Md5Stream(reader io.Reader) string {
 	buf := make([]byte, 1024*1024)
 	h := md5.New()
 

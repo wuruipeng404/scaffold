@@ -47,30 +47,19 @@ func Md5(data []byte) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func Md5Stream(reader io.Reader) string {
-	buf := make([]byte, 1024*1024)
+func Md5R(reader io.Reader) string {
 	h := md5.New()
-
-	for {
-		n, err := reader.Read(buf)
-		if err != nil {
-			if err != io.EOF {
-				return ""
-			}
-			break
-		}
-
-		if n == 0 {
-			break
-		}
-
-		h.Write(buf[:n])
-	}
-
+	_, _ = io.Copy(h, reader)
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func B64Encode(input io.Reader, output io.Writer) (err error) {
+func Md5RS(file io.ReadSeeker) string {
+	result := Md5R(file)
+	_, _ = file.Seek(0, 0)
+	return result
+}
+
+func B64EncR(input io.Reader, output io.Writer) (err error) {
 
 	encoder := base64.NewEncoder(base64.StdEncoding, output)
 	if _, err = io.Copy(encoder, input); err != nil {
@@ -84,12 +73,29 @@ func B64Encode(input io.Reader, output io.Writer) (err error) {
 	return nil
 }
 
-func B64Decode(input io.Reader, output io.Writer) (err error) {
+func B64DecR(input io.Reader, output io.Writer) (err error) {
 	decoder := base64.NewDecoder(base64.StdEncoding, input)
 	if _, err = io.Copy(output, decoder); err != nil {
 		return err
 	}
 	return nil
+}
+
+func B64EncRS(input io.ReadSeeker, output io.Writer) (err error) {
+	if err = B64EncR(input, output); err != nil {
+		return
+	}
+
+	_, err = input.Seek(0, 0)
+	return
+}
+
+func B64DecRS(input io.ReadSeeker, output io.Writer) (err error) {
+	if err = B64DecR(input, output); err != nil {
+		return
+	}
+	_, err = input.Seek(0, 0)
+	return
 }
 
 func RandomStr(n int) string {
@@ -112,3 +118,26 @@ func Env(env string, dft string) string {
 	}
 	return v
 }
+
+// func Md5R(reader io.Reader) string {
+// 	buf := make([]byte, 1024*1024)
+// 	h := md5.New()
+
+// for {
+// 	n, err := reader.Read(buf)
+// 	if err != nil {
+// 		if err != io.EOF {
+// 			return ""
+// 		}
+// 		break
+// 	}
+//
+// 	if n == 0 {
+// 		break
+// 	}
+//
+// 	h.Write(buf[:n])
+// }
+
+// 	return hex.EncodeToString(h.Sum(nil))
+// }

@@ -9,17 +9,17 @@ import (
 
 // Model primary key is auto increment
 type Model struct {
-	ID        uint           `gorm:"primarykey" json:"id"`
-	CreatedAt time.Time      `gorm:"index" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"index" json:"updated_at"`
+	ID        uint           `gorm:"primarykey;index" json:"id"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
 
 // UModel primary key is uuid model
 type UModel struct {
-	ID        string         `gorm:"primarykey" json:"id"`
-	CreatedAt time.Time      `gorm:"index" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"index" json:"updated_at"`
+	ID        string         `gorm:"primarykey;index" json:"id"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
 

@@ -86,7 +86,7 @@ func Trace() gin.HandlerFunc {
 }
 
 func genTraceId() string {
-	return util.Md5([]byte(uuid.New().String()))[5:16]
+	return uuid.NewString()
 }
 
 func GracefulLogger() gin.HandlerFunc {

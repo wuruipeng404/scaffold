@@ -38,9 +38,9 @@ type ApiResponse struct {
 
 type BeautyController struct{}
 
-func (c *BeautyController) TraceId(ctx *gin.Context) string {
-	return ctx.GetHeader(_TraceKey)
-}
+// func (c *BeautyController) TraceId(ctx *gin.Context) string {
+// 	return ctx.GetHeader(_TraceKey)
+// }
 
 // OK response with data
 func (c *BeautyController) OK(ctx *gin.Context, data any) {

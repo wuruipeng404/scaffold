@@ -60,7 +60,7 @@ func Md5RS(file io.ReadSeeker) (result string, err error) {
 		return "", err
 	}
 
-	if _, err = file.Seek(0, io.SeekStart); err != nil {
+	if _, err = file.Seek(io.SeekStart, io.SeekStart); err != nil {
 		return "", err
 	}
 	return result, nil
@@ -93,7 +93,7 @@ func B64EncRS(input io.ReadSeeker, output io.Writer) (err error) {
 		return
 	}
 
-	_, err = input.Seek(0, io.SeekStart)
+	_, err = input.Seek(io.SeekStart, io.SeekStart)
 	return
 }
 
@@ -101,7 +101,7 @@ func B64DecRS(input io.ReadSeeker, output io.Writer) (err error) {
 	if err = B64DecR(input, output); err != nil {
 		return
 	}
-	_, err = input.Seek(0, io.SeekStart)
+	_, err = input.Seek(io.SeekStart, io.SeekStart)
 	return
 }
 

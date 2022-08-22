@@ -15,6 +15,10 @@ import (
 
 var _log *zap.SugaredLogger
 
+func Obj() *zap.SugaredLogger {
+	return _log
+}
+
 type InitOption struct {
 	loglevel zapcore.Level // default debug
 	writers  []io.Writer   // default os.stdout

@@ -22,11 +22,11 @@ const (
 )
 
 type ApiPage struct {
-	TotalCount int64  `json:"total_count,omitempty"` // 列表数据总数
-	TotalPage  int64  `json:"total_page,omitempty"`  // 列表页总数
-	PageCount  int64  `json:"page_count,omitempty"`  // 当前页数量
-	PageIndex  int64  `json:"page_index,omitempty"`  // 当前页码
-	Sort       string `json:"sort,omitempty"`        // 排序
+	TotalCount int64  `json:"total_count"`          // 列表数据总数
+	TotalPage  int64  `json:"total_page,omitempty"` // 列表页总数
+	PageCount  int64  `json:"page_count"`           // 当前页数量
+	PageIndex  int64  `json:"page_index"`           // 当前页码
+	Sort       string `json:"sort,omitempty"`       // 排序
 }
 
 type ApiResponse struct {

@@ -12,3 +12,13 @@ type Page struct {
 	PageIndex  int64  `json:"page_index" example:"3"`    // 当前页码
 	Sort       string `json:"sort"`                      // 排序
 }
+
+type SingleData[T any] struct {
+	CodeMsg
+	Data T `json:"data"`
+}
+
+type MutilData[T any] struct {
+	CodeMsg
+	Data []T `json:"data"`
+}

@@ -13,12 +13,20 @@ import (
 )
 
 func JwtCreateToken(secret, sub string, expire time.Duration) (string, error) {
-	return jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(expire).Unix(), // 过期时间
-		Id:        uuid.New().String(),           // 唯一ID
-		IssuedAt:  time.Now().Unix(),             // 发行时间
-		Subject:   sub,                           // 用户信息
+
+	return jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.RegisteredClaims{
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(expire)), // 过期时间
+		ID:        uuid.New().String(),                        // 唯一ID
+		IssuedAt:  jwt.NewNumericDate(time.Now()),             // 发行时间
+		Subject:   sub,                                        // 用户信息
 	}).SignedString([]byte(secret))
+
+	// return jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.StandardClaims{
+	// 	ExpiresAt: time.Now().Add(expire).Unix(), // 过期时间
+	// 	Id:        uuid.New().String(),           // 唯一ID
+	// 	IssuedAt:  time.Now().Unix(),             // 发行时间
+	// 	Subject:   sub,                           // 用户信息
+	// }).SignedString([]byte(secret))
 }
 
 func JwtParseToken(secret, token string) (sub string, err error) {

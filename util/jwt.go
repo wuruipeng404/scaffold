@@ -7,10 +7,9 @@
 package util
 
 import (
-	"time"
-
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
+	"time"
 )
 
 func JwtCreateToken(secret, sub string, expire time.Duration) (string, error) {

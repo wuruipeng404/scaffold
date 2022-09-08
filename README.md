@@ -5,7 +5,7 @@
 ### install
 
 ```shell
-go get -u github.com/wuruipeng404/scaffold@v1.5.6
+go get -u github.com/wuruipeng404/scaffold@v1.5.10
 ```
 
 ### Usage

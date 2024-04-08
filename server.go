@@ -8,12 +8,14 @@ package scaffold
 
 import (
 	"context"
-	"go.uber.org/zap"
+	"errors"
 	"net/http"
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
+
+	"go.uber.org/zap"
 
 	"github.com/gin-gonic/gin"
 	"github.com/wuruipeng404/scaffold/logger"
@@ -83,7 +85,7 @@ func (g *GraceServer) Start() {
 
 	go func() {
 		g.log.Info("Server Start ...")
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			g.log.Fatalf("listen Error : %s", err.Error())
 		}
 	}()

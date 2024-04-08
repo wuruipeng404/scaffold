@@ -18,7 +18,7 @@ type SingleData[T any] struct {
 	Data T `json:"data"`
 }
 
-type MutilData[T any] struct {
+type MultiData[T any] struct {
 	CodeMsg
 	Data []T `json:"data"`
 }
